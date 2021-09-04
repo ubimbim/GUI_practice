@@ -18,8 +18,13 @@ public class TodaySport extends JFrame {
 	
 	// center : JList 3개
 	JList<String> backs;
+	// JList<String> chests;
 	JList<String> cnts;
 	JList<String> sets;
+	
+	JScrollPane jsp = new JScrollPane();
+	
+	JPanel jPanel4_1 = new JPanel(new BorderLayout()); // 운동 리스트
 	
 	public TodaySport() {
 		
@@ -34,7 +39,10 @@ public class TodaySport extends JFrame {
 		JPanel jPanel1 = new JPanel(); // 상단-north
 		JPanel jPanel2 = new JPanel(); // 상단-center
 		JPanel jPanel3 = new JPanel(new GridLayout(1, 3)); // 상단-south
-		JPanel jPanel4 = new JPanel(new GridLayout(1, 3, 5, 5)); // center
+		// JPanel jPanel4_1 = new JPanel(new BorderLayout()); jPanel4_1.setVisible(false); // 운동 리스트
+		JPanel jPanel4_2 = new JPanel(new BorderLayout()); // 횟수 리스트
+		JPanel jPanel4_3 = new JPanel(new BorderLayout()); // 세트 리스트
+		// JPanel jPanel4 = new JPanel(new GridLayout(1, 3, 5, 5)); // center
 		JPanel jPanel5 = new JPanel(); // 하단-north
 		JPanel jPanel6 = new JPanel(); // 하단-south
 		
@@ -58,17 +66,20 @@ public class TodaySport extends JFrame {
 		
 		// center : JList 3개
 		String[] list1 = {"운동1", "운동2", "운동3", "운동4" , "운동5", "운동6", "운동7", "운동8", "운동9"};
+		String[] list2 = {"가슴운동1", "가슴운동2", "가슴운동3", "가슴운동4", "가슴운동5"};
+		String[] list3 = {"어깨운동1", "어깨운동2", "어깨운동3", "어깨운동4", "어깨운동5"};
 		String[] cnt = {"5", "10", "15", "20", "25", "30", "35", "40"};
 		String[] set = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 		
 		backs = new JList<String>(list1);
-		jPanel4.add(new JScrollPane(backs)); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
+		jPanel4_1.add(new JScrollPane(backs)); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
+		jPanel4_1.setVisible(false);
 		
 		cnts = new JList<String>(cnt);
-		jPanel4.add(new JScrollPane(cnts)); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
+		jPanel4_2.add(new JScrollPane(cnts), BorderLayout.CENTER); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
 		
 		sets = new JList<String>(set);
-		jPanel4.add(new JScrollPane(sets)); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
+		jPanel4_3.add(new JScrollPane(sets), BorderLayout.CENTER); // 컨테이너에 컴포넌트 올리기(스크롤바 추가)
 		
 		// 하단-north : JButton 3개
 		JButton sp_add = new JButton("추가");
@@ -88,6 +99,12 @@ public class TodaySport extends JFrame {
 		jGroup1.add(jPanel2, BorderLayout.CENTER);
 		jGroup1.add(jPanel3, BorderLayout.SOUTH); 
 		
+		// 상위 컨테이너 만들기 - 리스트
+		JPanel jGrouplist = new JPanel(new GridLayout(1, 3, 5, 5));
+		jGrouplist.add(jPanel4_1);
+		jGrouplist.add(jPanel4_2);
+		jGrouplist.add(jPanel4_3);
+		
 		// 상위 컨테이너 만들기 : 하단
 		JPanel jGroup2 = new JPanel(new BorderLayout());
 		jGroup2.add(jPanel5, BorderLayout.NORTH); 
@@ -95,13 +112,18 @@ public class TodaySport extends JFrame {
 		
 		// 프레임에 상위 컨테이너 올리기
 		add(jGroup1, BorderLayout.NORTH);
-		add(jPanel4, BorderLayout.CENTER);
+		add(jGrouplist, BorderLayout.CENTER);
 		add(jGroup2, BorderLayout.SOUTH);
 		
 		setBounds(200, 200, 300, 300);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		RbuttonListener listener = new RbuttonListener();
+		for(int i=0;i<sports.length;i++) {
+			button[i].addActionListener(listener);
+		}
 		
 		// 이벤트처리
 		// 추가(sp_add)버튼 클릭 시 선택된 리스트 내용을 하단 텍스트 공간에 추가
@@ -120,16 +142,13 @@ public class TodaySport extends JFrame {
 			}
 		});
 		
-		// 확인(sp_confrim)버튼 클릭 시 라디오버튼, 리스트 목록 선택 초기화
+		// 확인(sp_confrim)버튼 클릭 시 라디오버튼 선택 초기화
 		sp_confrim.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
 				group.clearSelection(); 
-				backs.clearSelection();
-				cnts.clearSelection();
-				sets.clearSelection();
 				
 			}
 		});
@@ -144,6 +163,20 @@ public class TodaySport extends JFrame {
 				
 			}
 		});
+		
+	}
+	
+	class RbuttonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			switch(e.getActionCommand()) {
+				case "등" : 
+					jPanel4_1.setVisible(true);
+			}
+			
+		}
 		
 	}
 
