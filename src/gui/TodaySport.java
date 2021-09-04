@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -100,6 +102,48 @@ public class TodaySport extends JFrame {
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		// 이벤트처리
+		// 추가(sp_add)버튼 클릭 시 선택된 리스트 내용을 하단 텍스트 공간에 추가
+		sp_add.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				jta.append(backs.getSelectedValue() +
+						", " + cnts.getSelectedValue() + "회, " + 
+						sets.getSelectedValue() + "세트\n");
+				backs.clearSelection();
+				cnts.clearSelection();
+				sets.clearSelection();
+				
+			}
+		});
+		
+		// 확인(sp_confrim)버튼 클릭 시 라디오버튼, 리스트 목록 선택 초기화
+		sp_confrim.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				group.clearSelection(); 
+				backs.clearSelection();
+				cnts.clearSelection();
+				sets.clearSelection();
+				
+			}
+		});
+		
+		// 종료(sp_exit)버튼 클릭 시 종료
+		sp_exit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				System.exit(0);
+				
+			}
+		});
 		
 	}
 
